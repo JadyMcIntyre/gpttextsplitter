@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        function copyToClipboard(button) {
+            var text = button.dataset.text;
+            var textarea = document.createElement("textarea");
+            textarea.className = "hidden";
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textarea);
+            button.classList.add('clicked');
+        }
+
+    </script>
+</head>
+
+<body>
+    <h1>Text Splitter</h1>
+    <form action="/" method="post">
+        <label for="input_text">Enter Your Text</label>
+        <br>
+        <textarea name="input_text" id="input_text" cols="60" rows="10"></textarea>
+        <br>
+        <input type="submit" value="Split Text">
+    </form>
+
+    {% if splitted_text %}
+    <h2>Text Chunks</h2>
+    <ol>
+        {% for chunk in splitted_text %}
+        <li>
+            <button data-text="{{ chunk }}" onclick="copyToClipboard(this)">Copy Chunk {{ loop.index }}</button>
+        </li>
+        {% endfor %}
+    </ol>
+    {% endif %}
+</body>
+
+</html>
